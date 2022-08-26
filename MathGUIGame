@@ -1,7 +1,112 @@
-import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.Flowlayout;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.util.Random;
 
-public class MathGUIGame extends JFrame{
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class MathGUIGame extends JFrame implements ActionListener {
+
+    JLabel titleLabel = new JLabel("Math Quiz Game");
+    JLabel subTitle1Label = new JLabel("============");
+    JLabel subTitle2Label = new JLabel("============");
+    JLabel questionLabel = new JLabel();
+    JLabel answerLabel = new JLabel("Answer: ");
+    JLabel gameOverLabel = new JLabel();
+
+    
+    JButton playButton = new JButton ("PLAY");
+    JButton addButton = new JButton ("+");
+    JButton restartButton = new JButton("RESTART");
+    JButton exitButton = new JButton("EXIT");
+
+    JTextField answerField = new JTextField(10);
+    JTextField remarksField = new JTextField(15);
+    JTextField rightCounterField = new JTextField(3);
+    JTextField wrongCounterField = new JTextField(3);
+
+    Font titleFont = new Font("Tohoma",Font.BOLD,58);
+    Font questionFont = new Font("Tahoma", Font.BOLD,48);
+    Font answerFont = new Font("Tahoma",Font.BOLD, 38);
+
+    Random random = new Random();
+    int digit1;
+    int digit2;
+    int correctAnswer;
+    String operator = "";
+    int rightCounter=0;
+    int wrongCounter=0;
+    final int LIMIT=10;
+
+
     public MathGUIGame() {
+        setLayout(new Flowlayout());
+        add(titleLabel);
+        add(subTitle2Label);
+        add(questionLabel);
+        add(subTitle2Label);
+        add(answerLabel);
+        add(answerField);
+        add(rightCounterField);
+        add(addButton);
+        add(wrongCounterField);
+        add(remarksField);
+        add(playButton);
+        add(gameOverLabel);
+        add(restartButton);
+        add(exitButton);
+
+
+        rightCounterField.setVisible(false);
+        wrongCounterField.setVisible(false);
+        questionLabel.setVisible(false);
+        subTitle2Label.setVisible(false);
+        answerLabel.setVisible(false);
+        answerField.setVisible(false);
+        addButton.setVisible(false);
+        remarksField.setVisible(false);
+        gameOverLabel.setVisible(false);
+        restartButton.setVisible(false);
+        exitButton.setVisible(false);
+
+
+        getContentPane().setBackground(Color.blue);
+        rightCounterField.setForeground(Color.red);
+        wrongCounterField.setForeground(Color.red);
+        questionLabel.setForeground(Color.red);
+        answerField.setForeground(Color.blue);
+        addButton.setForeground(Color.red);
+
+        addButton.setBackground(Color.blue);
+        playButton.setBackground(Color.yellow);
+        
+
+        titleLabel.setFont(titleFont);
+        subTitle1Label.setFont(questionFont);
+        subTitle2Label.setFont(questionFont);
+        questionLabel.setFont(questionFont);
+        answerLabel.setFont(answerFont);
+        answerField.setFont(answerFont);
+        remarksField.setFont(answerFont);
+        rightCounterField.setFont(answerFont);
+        wrongCounterField.setFont(answerFont);
+        addButton.setFont(titleFont);
+        playButton.setFont(new Font("Tahoma",Font.BOLD,100));
+        restartButton.setFont(new Font("Tahoma", Font.BOLD,60));
+        exitButton.setFont(new Font("Tahoma",Font.BOLD,60));
+        gameOverLabel.setFont(new Font("Tahoma", Font,BOLD,95));
+        
+        remarksField.setHorizontalAlignment(JTextField.CENTER);
+        wrongCounterField.setHorizontalAlignment(JTextField.RIGHT);
+
+        playButton.addActionListener(this);
+        answerField.addActionListener(this);
+        addButton.addActionListener(this);
+
 
         setTitle("Math GUI Game");
         setSize(600,500);
@@ -9,11 +114,121 @@ public class MathGUIGame extends JFrame{
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+}
+    
+    
+
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == playButton) {
+            getContentPane().setBackground(Color.blue);
+            playButton.setVisible(false);
+            rightCounterField.setVisible(true);
+            wrongCounterField.setVisible(true);
+            questionLabel.setVisible(true);
+            subTitle2Label.setVisible(true);
+            answerLabel.setVisible(true);
+            answerField.setVisible(false);
+            answerField.setEditable(true);
+            addButton.setVisible(true);
+            remarksField.setVisible(true);
+            answerField.setVisible(true);
+            answerField.setEditable(false);
+
+
+         
     }
+    if(e.getSource() == addButton) {
+    operator= "+"
+    questionLabel.setText(setQuestion(operator));
+    answerField.setEditable(true);
+    }
+    if (e.getSource()== restartButton) {
+        new MathGUIGame();
+        this.setVisible(false);
+    }
+    if (e.getSource()== exitButton) {
+        System.exit(0);
+    }
+     
+    }
+    if (e.getSource() == answerField) {
+        int userAnswer = Integer.parseInt(answerField,getText());
+        if(userAnswer == correctAnswer){
+            remarksField.setForeground(Color.blue);
+            remarksField.setText(getCorrectResponse());
+            answerField.setText("");
+            rightCounterField.setText(rightCounterField + "");
+            questionLabel.setText(setQuestion(operator));
+        }
+        else {
+            remarksField.setForeground(Color.red);
+            remarksField.seText(getWrongResponse());
+            answerField.setText("");
+            wrongCounterField.setText(wrongCounter+ "");
+            if (wrongCounter == LIMIT){
+                getContentPane().setBackground(Color.black);
+                gameOverLabel.setText("GAME OVER");
+                gameOverLabel.setVisible(true);
+                restartButton.setVisible(true);
+                exitButton.setVisible(true);
+                rightCounterField.setVisible(false);
+                wrongCounterField.setVisible(false);
+                questionLabel.setVisible(false);
+                subTitle2Label.setVisible(false);
+                answerLabel.setVisible(false);
+                answerField.setVisible(false);
+
+        }
+    }
+
+}
+public String getCorrectResponse(){
+    String response = "";
+    rightCounter++;
+    switch(random.nextInt(5)){
+        case 0: response= "Excellent"; break;
+        case 1: response= "Very Good!"; break;
+        case 2: response= "Correct!";break;
+        case 3: response= "That's Right!";break;
+        case 4: response= "Awesome"; break;
+    }
+    return response;
+}
+pubic String getWrongResponse(){
+    String response = "";
+    wrongCounter++;
+    switch(random.nextInt(5)){
+        case 0: response = "Wrong!";break;
+        case 1: response = " Sorry, try again"; break;
+        case 2: response = "Try Once More!"; break;
+        case 3: response = "Sorry, incorrect"; break;
+        case 4: response= "Sorry, Incorrect!"; break;
+    }
+    return response;
+}
+
+
+    public int getRandomNumber() {
+    return random.nextInt(10); 
+}
+public String setQuestion(String operator) {
+    digit1 = getRandomNumber();
+    digit2 = getRandomNumber();
+
+    switch (operator) {
+        case "+": correctAnswer = digit1 + digit2; 
+            
+            break;
+    
+        
+    }
+    
+    return "How much is " + digit1 + operator + digit2 +" ? ";
 
     public static void main(String[] args) {
         new MathGUIGame();
     }
 
 }
+
 ;
