@@ -106,6 +106,8 @@ public class MathGUIGame extends JFrame implements ActionListener {
         playButton.addActionListener(this);
         answerField.addActionListener(this);
         addButton.addActionListener(this);
+        restartButton.addActionListener(this);
+        exitButton.addActionListener(this);
 
 
         setTitle("Math GUI Game");
