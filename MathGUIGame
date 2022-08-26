@@ -1,0 +1,19 @@
+import javax.swing.JFrame;
+
+public class MathGUIGame extends JFrame{
+    public MathGUIGame() {
+
+        setTitle("Math GUI Game");
+        setSize(600,500);
+        setLocation(900,100);
+        setResizable(false);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        new MathGUIGame();
+    }
+
+}
+;
